@@ -1,0 +1,941 @@
+openapi: 3.0.3
+info:
+  title: Totem Food Service - OpenAPI 3.0
+  description: |-
+    API utilizada pelo Administrativo e aplicação hospedada no Totem da Food Service
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: Customers
+    description: Access to customers
+  - name: Order
+    description: Access to orders
+  - name: Payment Gateway
+    description: Access to payment
+  - name: Category
+    description: Access to categories
+  - name: Products
+    description: Access to product
+
+paths:
+  /totem/customer:
+    post:
+      tags:
+        - Customers
+      summary: Create a new customer
+      description: Create a new customer
+      operationId: createCustomer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerCreateDto'
+      responses:
+        '201':
+          description: created operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerDto'
+        '405':
+          description: Invalid input
+
+  /totem/customer/{customerId}:
+    delete:
+      tags:
+        - Customers
+      summary: Remove a Customer by ID
+      description: Remove Customer
+      operationId: deleteById
+      parameters:
+        - name: customerId
+          in: path
+          description: Delete customer by id
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Not found
+
+  /totem/login:
+    get:
+      tags:
+        - Customers
+      summary: Login totem
+      description: Login customer in totem
+      operationId: loginCustomer
+      parameters:
+        - name: cpf
+          in: header
+          description: Document consumer (CPF)
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: header
+          description: Password to login consumer
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerDto'
+        '405':
+          description: Invalid input
+
+  /administrative/customer:
+    get:
+      tags:
+        - Customers
+      summary: List all clients
+      description: List all clients
+      operationId: listAllCustomers
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerDto'
+        '405':
+          description: Invalid input
+
+  /administrative/category:
+    post:
+      tags:
+        - Category
+      summary: Create a new category
+      description: Create a new category
+      operationId: createCategory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryCreateDto'
+      responses:
+        '201':
+          description: created operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+        '405':
+          description: Invalid input
+    get:
+      tags:
+        - Category
+      summary: List all categories
+      description: Search all categories
+      operationId: listAllCategories
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryDto'
+        '405':
+          description: Invalid input
+  /administrative/category/{categoryId}:
+    get:
+      tags:
+        - Category
+      summary: Get a category
+      description: search for a category
+      operationId: getCategoryByID
+      parameters:
+        - name: categoryId
+          in: path
+          description: ID of category to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+        '405':
+          description: Invalid input
+    put:
+      tags:
+        - Category
+      summary: Update category
+      description: Update category
+      operationId: updateCategory
+      parameters:
+        - name: categoryId
+          in: path
+          description: ID of category to return
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryCreateDto'
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryDto'
+        '405':
+          description: Invalid input
+    delete:
+      tags:
+        - Category
+      summary: Remove category
+      description: Remove category
+      operationId: deleteCategoryByID
+      parameters:
+        - name: categoryId
+          in: path
+          description: ID of category to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Not found
+
+
+  /administrative/product:
+    post:
+      tags:
+        - Products
+      summary: Create a new product
+      description: Create a new product
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCreateDto'
+      responses:
+        '201':
+          description: created operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+        '405':
+          description: Invalid input
+    get:
+      tags:
+        - Products
+      summary: List all product
+      description: List all product
+      operationId: listAllProducts
+      parameters:
+        - name: categoryId
+          in: query
+          description: ID of order to return
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductDto'
+        '405':
+          description: Invalid input
+  /administrative/product/{productId}:
+    get:
+      tags:
+        - Products
+      summary: Get product
+      description: Get product
+      operationId: getProductByID
+      parameters:
+        - name: productId
+          in: path
+          description: ID of product to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '201':
+          description: created operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+        '405':
+          description: Invalid input
+    put:
+      tags:
+        - Products
+      summary: Update product
+      description: Update product
+      operationId: updateProduct
+      parameters:
+        - name: productId
+          in: path
+          description: ID of product to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCreateDto'
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+        '405':
+          description: Invalid input
+    delete:
+      tags:
+        - Products
+      summary: Remove product
+      description: Remove product
+      operationId: deleteProductByID
+      parameters:
+        - name: productId
+          in: path
+          description: ID of product to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Not found
+
+  /totem/order:
+    post:
+      tags:
+        - Order
+      summary: Create a new order
+      description: Create a new order
+      operationId: createOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderCreateDto'
+      responses:
+        '201':
+          description: created operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDto'
+        '405':
+          description: Invalid input
+
+    get:
+      tags:
+        - Order
+      summary: Get orders
+      description: "Get orders. Attention! use only one of the following filters customerId, orderId or status[]"
+      operationId: orderGetFilter
+      parameters:
+        - name: orderId
+          in: query
+          description: ID of order to return
+          required: false
+          schema:
+            type: string
+        - name: customerId
+          in: query
+          description: ID of customer to return
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: ID of order to return
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/OrderStatusEnum'
+        - name: onlyTreadmill
+          in: query
+          description: Only orders with status RECEIVED, IN_PREPARATION and READY
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderDto'
+        '204':
+          description: No results found or input filters are incorrect
+        '405':
+          description: Invalid input
+
+  /totem/order/{orderId}:
+    put:
+      tags:
+        - Order
+      summary: Update order
+      description: Update order
+      operationId: orderUpdate
+      parameters:
+        - name: orderId
+          in: path
+          description: ID of order to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderCreateDto'
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDto'
+        '405':
+          description: Invalid input
+
+  /totem/order/{orderId}/status/{statusName}:
+    put:
+      tags:
+        - Order
+      summary: Update order
+      description: Update order
+      operationId: orderStatus
+      parameters:
+        - name: orderId
+          in: path
+          description: ID of order to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: statusName
+          in: path
+          description: ID of order to return
+          required: true
+          schema:
+            $ref: '#/components/schemas/OrderStatusEnum'
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDto'
+        '405':
+          description: Invalid input
+
+  /administrative/orders:
+    get:
+      tags:
+        - Order
+      summary: List all orders
+      description: List all orders
+      operationId: listAllOrders
+      parameters:
+        - name: status
+          in: query
+          description: Order token
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/OrderStatusEnum'
+        - name: onlyTreadmill
+          in: query
+          description: Only orders with status RECEIVED, IN_PREPARATION and READY
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderAdminDto'
+        '405':
+          description: Invalid input
+
+  /totem/payment:
+    post:
+      tags:
+        - Payment Gateway
+      summary: Create payment
+      description: Create payment
+      operationId: paymentQrCode
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCreateDto'
+      responses:
+        '201':
+          description: created operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentQRCodeDto'
+        '405':
+          description: Invalid input
+
+  /totem/payment/{paymentId}:
+    get:
+      tags:
+        - Payment Gateway
+      summary: Get payment the order
+      description: Get payment
+      operationId: getPaymentByID
+      parameters:
+        - name: paymentId
+          in: path
+          description: ID of product to return
+          required: true
+          schema:
+            type: string
+        - name: x-with-image-qrcode
+          in: header
+          description: If true, Generate QR Code image, else show information.
+          required: false
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: success operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentDto'
+        '405':
+          description: Invalid input
+
+
+  /totem/payment/callback:
+    post:
+      tags:
+        - Payment Gateway
+      summary: Update order
+      description: Update order
+      operationId: orderCallbackStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCallbackDto'
+      responses:
+        '200':
+          description: "Ok"
+        '204':
+          description: "No Content"
+
+components:
+  schemas:
+    CustomerCreateDto:
+      type: object
+      required:
+        - name
+        - email
+        - cpf
+      properties:
+        name:
+          type: string
+          description: Customer name
+          example: 'Joe'
+        email:
+          type: string
+          description: E-mail
+          example: 'joe@email.com'
+        cpf:
+          type: string
+          description: CPF
+          example: '14315476579'
+        mobile:
+          type: string
+          description: Mobile number
+          example: '5535989483811'
+        password:
+          type: string
+          description: Password
+          example: 'x!iu#112'
+    CustomerDto:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '64826bb3554280604d93d7b6'
+        name:
+          type: string
+          description: Customer name
+          example: 'Joe'
+        email:
+          type: string
+          description: E-mail
+          example: 'joe@email.com'
+        cpf:
+          type: string
+          description: CPF
+          example: '14315476579'
+        mobile:
+          type: string
+          description: Mobile number
+          example: '5535989483811'
+        modifiedAt:
+          type: string
+          format: date-time
+          example: '2023-06-09T00:00:51.623596531Z'
+          description: Date of last update
+        createAt:
+          type: string
+          format: date-time
+          example: '2023-06-09T00:00:51.623596531Z'
+          description: Date of creation
+    CategoryDto:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '64826bb3554280604d93d7b6'
+        name:
+          type: string
+          description: Category name
+          example: 'refrigerantes'
+        modifiedAt:
+          type: string
+          format: date-time
+          example: '2023-06-09T00:00:51.623596531Z'
+          description: Date of last update
+        createAt:
+          type: string
+          format: date-time
+          example: '2023-06-09T00:00:51.623596531Z'
+          description: Date of creation
+    CategoryCreateDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Category name
+          example: 'refrigerantes'
+    OrderCreateDto:
+      type: object
+      properties:
+        customerId:
+          type: string
+          example: 11934bb3554280604d93d7b6
+        product:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemQuantityDto'
+    OrderDto:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '64826bb3554280604d93d7b6'
+        customerId:
+          type: string
+          example: '4d93d7b6'
+        product:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductDto'
+        status:
+          $ref: '#/components/schemas/OrderStatusEnum'
+        price:
+          type: number
+          description: price
+          example: '53.89'
+        modifiedAt:
+          type: string
+          format: date-time
+          example: '2023-06-09T00:00:51.623596531Z'
+          description: Date of last update
+        createAt:
+          type: string
+          format: date-time
+          example: '2023-06-09T00:00:51.623596531Z'
+          description: Date of creation
+
+    ItemQuantityDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Product id
+          example: '64826bb3554280604d93d7b6'
+        qtd:
+          type: number
+          example: 2
+
+    OrderAdminDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Order id
+          example: '1'
+        price:
+          type: number
+          description: price
+          example: '53.89'
+        customer:
+          $ref: '#/components/schemas/CustomerDto'
+        status:
+          $ref: '#/components/schemas/OrderStatusEnum'
+        waitTime:
+          type: number
+          description: Time waiting for order to be ready
+          example: '53.89'
+        createAt:
+          type: string
+          format: date-time
+          example: '2023-06-09T00:00:51.623596531Z'
+          description: Date of order creation
+        modifiedAt:
+          type: string
+          format: date-time
+          example: '2023-06-09T00:00:51.623596531Z'
+          description: Date of last update
+        receivedAt:
+          type: string
+          format: date-time
+          example: '2023-06-09T00:00:51.623596531Z'
+          description: Date of last update
+
+    OrderStatusEnum:
+      type: string
+      description: Status order
+      enum:
+        - NEW
+        - WAITING_PAYMENT
+        - RECEIVED
+        - IN_PREPARATION
+        - READY
+        - FINALIZED # Take the order on the counter
+        - CANCELED
+      example: NEW
+
+    ProductCreateDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Product name
+          example: 'Coca-cola'
+        description:
+          type: string
+          description: Product description
+          example: 'Refrigerante sabor cola'
+        image:
+          type: string
+          description: Product image URL
+          example: 'https://product-image.s3.east-1.amazonaws.com/coca-cola.png'
+        price:
+          type: number
+          description: Price
+          example: '5.90'
+        category:
+          type: string
+          description: category identification
+          example: '64826bb3554280604d93d7b6'
+
+    ProductDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Order id
+          example: '1'
+        name:
+          type: string
+          description: Product name
+          example: 'Coca-cola'
+        description:
+          type: string
+          description: Product description
+          example: 'Refrigerante sabor cola'
+        image:
+          type: string
+          description: Product image URL
+          example: 'https://product-image.s3.east-1.amazonaws.com/coca-cola.png'
+        price:
+          type: number
+          description: Price
+          example: '5.90'
+        category:
+          $ref: '#/components/schemas/CategoryDto'
+        modifiedAt:
+          type: string
+          format: date-time
+          example: '2023-06-09T00:00:51.623596531Z'
+          description: Date of last update
+        createAt:
+          type: string
+          format: date-time
+          example: '2023-06-09T00:00:51.623596531Z'
+          description: Date of creation
+
+    PaymentCreateDto:
+      type: object
+      properties:
+        orderId:
+          type: string
+          description: order identification
+          example: '11826bb3554280604d93d7b6'
+        customerId:
+          type: string
+          description: customer identification
+          example: '11826bb3554280604d93d7b6'
+
+    PaymentQRCodeDto:
+      type: object
+      properties:
+        qrcodeBase64:
+          type: string
+          description: base64
+          example: 'iVBORw0KGgoAAAANSUhEUgAABRQAAAUUCAYAAACu5p7oAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAIABJREFUeJzs2luO3LiWQNFmI+Y/Zd6vRt36KGNXi7ZOBtcagHD4kNLeiLX33v8DAAAAABD879sDAAAAAAA/h6AIAAAAAGSCIgAAAACQCYoAAAAAQCYoAgAAAACZoAgAAAAAZIIiAAAAAJAJigAAAABAJigCAAAAAJmgCAAAAABkgiIAAAAAkAmKAAAAAEAmKAIAAAAAmaAIAAAAAGSCIgAAAACQCYoAAAAAQCYoAgAAAACZoAgAAAAAZIIiAAAAAJAJigAAAABAJigCA...'
+        storeOrderId:
+          type: string
+          description: order store identification
+          example: 'cb87fb30-db28-46d6-8878-46bd6847624e'
+        paymentId:
+          type: string
+          description: order identification
+          example: '11826bb3554280604d93d7b6'
+        status:
+          $ref: '#/components/schemas/PaymentStatusEnum'
+
+    PaymentStatusEnum:
+      type: string
+      description: Status payment
+      enum:
+        - PENDING
+        - COMPLETED
+      example: PENDING
+
+    PaymentDto:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Order id
+          example: '1'
+        price:
+          type: number
+          description: Price
+          example: '5.90'
+        status:
+          $ref: '#/components/schemas/PaymentStatusEnum'
+        qrcodeBase64:
+          type: string
+          description: base64 to generate qr code
+          example: '00020101021243650016COM.MERCADOLIBRE020130636cb87fb30-db28-46d6-8878-46bd6847624e5204000053039865802BR5909Test Test6009SAO PAULO62070503***6304535B'
+        modifiedAt:
+          type: string
+          format: date-time
+          example: '2023-06-09T00:00:51.623596531Z'
+          description: Date of last update
+        createAt:
+          type: string
+          format: date-time
+          example: '2023-06-09T00:00:51.623596531Z'
+          description: Date of creation
+
+    PaymentCallbackDto:
+      type: object
+      description: "https://www.mercadopago.com.br/developers/pt/docs/your-integrations/notifications/webhooks"
+      properties:
+        action:
+          type: string
+          description: Type of notification received, if payment.created or payment.updated
+          example: 'payment.updated'
+        apiVersion:
+          type: string
+          description: Indicates whether it is a duplicate notification or not
+          example: 'v1'
+        dateCreated:
+          type: string
+          format: date-time
+          description: Resource creation date (payments)
+          example: '2015-03-25T10:04:58.396-04:00'
+        paymentId:
+          type: string
+          description: Notification ID
+          example: 'cb87fb30-46d6-8878-46bd6847624e'
+        liveMode:
+          type: string
+          description: Indicates whether the URL entered is valid
+          example: '/v1/totem/payment/callback'
+        type:
+          type: string
+          description: Type of notification received (payments)
+          example: 'payments'
+        sellerId:
+          type: string
+          description: Seller UserID
+          example: '12345'
+        data:
+          $ref: '#/components/schemas/PaymentDataDto'
+
+    PaymentDataDto:
+      type: object
+      description: ID do payment ou merchant_order
+      properties:
+        id:
+          type: string
+          description: ID do payment ou merchant_order
+          example: '652d74dff3fc61160d792436'
