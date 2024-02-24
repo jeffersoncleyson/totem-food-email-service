@@ -1,7 +1,7 @@
 version: '3.5'
 
 networks:
-  order-service-network:
+  email-service-network:
     driver: bridge
 
 volumes:
@@ -24,7 +24,7 @@ services:
       retries: 5
       start_period: 5s
     networks:
-      - order-service-network
+      - email-service-network
 
   mysql-dev:
     image: mysql:8.0
@@ -39,7 +39,7 @@ services:
       timeout: 20s
       retries: 10
     networks:
-      - order-service-network
+      - email-service-network
 
   totem-food-order-service:
     container_name: totem-food-order-service
@@ -50,9 +50,12 @@ services:
       - "8080:8080"
       - "8780:8787" # DEBUG
     depends_on:
-      - mongo-dev
+      localstack:
+        condition: service_healthy
+      mongo-dev:
+        condition: service_healthy
     networks:
-      - order-service-network
+      - email-service-network
 
   totem-food-payment-service:
     container_name: totem-food-payment-service
@@ -63,9 +66,12 @@ services:
       - "8082:8082"
       - "8782:8787" # DEBUG
     depends_on:
-      - mysql-dev
+      localstack:
+        condition: service_healthy
+      mongo-dev:
+        condition: service_healthy
     networks:
-      - order-service-network
+      - email-service-network
 
   totem-food-customer-service:
     container_name: totem-food-customer-service
@@ -76,7 +82,20 @@ services:
       - "8081:8081"
       - "8781:8787" # DEBUG
     networks:
-      - order-service-network
+      - email-service-network
+
+  totem-food-email-service:
+    container_name: totem-food-email-service
+    hostname: totem-food-email-service
+    image: jeffersoncleyson/totem-food-email-service:latest
+    env_file: envs/email/.env
+    ports:
+      - "8783:8787" # DEBUG
+    depends_on:
+      localstack:
+        condition: service_healthy
+    networks:
+      - email-service-network
 
   mailhog:
     container_name: mailhog
@@ -84,7 +103,26 @@ services:
     image: mailhog/mailhog:latest
     restart: always
     ports:
-      - 1025:1025
-      - 8025:8025
+      - "1025:1025"
+      - "8025:8025"
     networks:
-      - order-service-network
+      - email-service-network
+
+  localstack:
+    container_name: localstack
+    image: localstack/localstack:latest
+    env_file: envs/localstack/.env
+    healthcheck:
+      test: >-
+        awslocal sqs list-queues && 
+        awslocal sns list-topics
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "4566:4566"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./envs/localstack/init.sh:/docker-entrypoint-initaws.d/init.sh
+    networks:
+      - email-service-network
