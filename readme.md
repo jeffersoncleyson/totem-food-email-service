@@ -1,9 +1,9 @@
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-orange.svg)](https://sonarcloud.io/summary/new_code?id=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-order-service)
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-orange.svg)](https://sonarcloud.io/summary/new_code?id=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-email-service)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-order-service&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-order-service)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-order-service&metric=coverage)](https://sonarcloud.io/summary/new_code?id=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-order-service)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-order-service&metric=bugs)](https://sonarcloud.io/summary/new_code?id=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-order-service)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-order-service&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-order-service)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-email-service&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-email-service)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-email-service&metric=coverage)](https://sonarcloud.io/summary/new_code?id=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-email-service)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-email-service&metric=bugs)](https://sonarcloud.io/summary/new_code?id=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-email-service)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-email-service&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=fiap-tech-challenge-4787bf24ba181ac258cb520837a657896a92044c_totem-food-email-service)
 
 ---
 
